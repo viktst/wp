@@ -34,6 +34,12 @@ public class BookReservationServlet extends HttpServlet {
         String readerAddress = req.getParameter("readerAddress");
         int numberOfCopies = Integer.parseInt(req.getParameter("numCopies"));
 
+        if (readerName == null || readerAddress == null || readerName.isEmpty() || readerAddress.isEmpty()) {
+            req.getSession().setAttribute("errorMessage", "The name and address cannot be empty.");
+            resp.sendRedirect("/?error");
+            return;
+        }
+
         var reservation = reservationService.placeReservation(bookTitle, readerName, readerAddress, numberOfCopies);
         String clientIP = getClientIP(req);
 

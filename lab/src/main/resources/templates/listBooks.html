@@ -49,7 +49,7 @@
                                 <div class="card-body py-2">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="bookTitle"
-                                               th:value="${book.title}" th:id="'book_' + ${iterStat.index}" required>
+                                               th:value="${book.title}" th:id="'book_' + ${iterStat.index}">
                                         <label class="form-check-label" th:for="'book_' + ${iterStat.index}">
                                             <strong>Title:</strong> <span th:text="${book.title}"></span>,
                                             <strong>Genre:</strong> <span th:text="${book.genre}"></span>,
@@ -69,11 +69,11 @@
                                 <h2 class="h4 mb-3">Enter your information:</h2>
                                 <div class="mb-3">
                                     <label class="form-label">Your Name:</label>
-                                    <input type="text" name="readerName" class="form-control" required>
+                                    <input type="text" name="readerName" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Your Address:</label>
-                                    <input type="text" name="readerAddress" class="form-control" required>
+                                    <input type="text" name="readerAddress" class="form-control">
                                 </div>
                             </div>
 
@@ -81,7 +81,7 @@
                                 <h2 class="h4 mb-3">Choose number of copies:</h2>
                                 <div class="mb-3">
                                     <input type="number" name="numCopies" min="1" max="10" value="1"
-                                           class="form-control" required>
+                                           class="form-control">
                                 </div>
                             </div>
                         </div>
