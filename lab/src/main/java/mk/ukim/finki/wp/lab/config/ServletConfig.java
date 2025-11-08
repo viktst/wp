@@ -11,24 +11,23 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 @Configuration
 public class ServletConfig {
-
-    @Bean
-    public ServletRegistrationBean<BookListServlet> bookListServlet(
-            BookService bookService,
-            SpringTemplateEngine templateEngine) {
-        ServletRegistrationBean<BookListServlet> bean = new ServletRegistrationBean<>(
-                new BookListServlet(bookService, templateEngine), "/");
-        bean.setLoadOnStartup(1);
-        return bean;
-    }
-
-    @Bean
-    public ServletRegistrationBean<BookReservationServlet> bookReservationServlet(
-            BookReservationService reservationService,
-            SpringTemplateEngine templateEngine) {
-        ServletRegistrationBean<BookReservationServlet> bean = new ServletRegistrationBean<>(
-                new BookReservationServlet(reservationService, templateEngine), "/bookReservation");
-        bean.setLoadOnStartup(1);
-        return bean;
-    }
+    //    @Bean
+    //    public ServletRegistrationBean<BookListServlet> bookListServlet(
+    //            BookService bookService,
+    //            SpringTemplateEngine templateEngine) {
+    //        ServletRegistrationBean<BookListServlet> bean = new ServletRegistrationBean<>(
+    //                new BookListServlet(bookService, templateEngine), "/");
+    //        bean.setLoadOnStartup(1);
+    //        return bean;
+    //    }
+    //
+    //    @Bean
+    //    public ServletRegistrationBean<BookReservationServlet> bookReservationServlet(
+    //            BookReservationService reservationService,
+    //            SpringTemplateEngine templateEngine) {
+    //        ServletRegistrationBean<BookReservationServlet> bean = new ServletRegistrationBean<>(
+    //                new BookReservationServlet(reservationService, templateEngine), "/bookReservation");
+    //        bean.setLoadOnStartup(1);
+    //        return bean;
+    //    }
 }
