@@ -4,6 +4,7 @@ import mk.ukim.finki.wp.lab.model.BookReservation;
 import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.repository.BookReservationRepository;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 public class InMemoryBookReservationRepositoryImpl implements BookReservationRepository {
@@ -12,5 +13,10 @@ public class InMemoryBookReservationRepositoryImpl implements BookReservationRep
     public BookReservation save(BookReservation reservation) {
         DataHolder.reservations.add(reservation);
         return reservation;
+    }
+
+    @Override
+    public List<BookReservation> findAll() {
+        return DataHolder.reservations;
     }
 }

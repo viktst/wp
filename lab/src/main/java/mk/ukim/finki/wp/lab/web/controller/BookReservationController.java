@@ -1,7 +1,7 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
-import mk.ukim.finki.wp.lab.service.BookReservationService;
 import lombok.AllArgsConstructor;
+import mk.ukim.finki.wp.lab.service.BookReservationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +20,10 @@ public class BookReservationController {
     public String makeReservation(@RequestParam String bookTitle,
                                   @RequestParam String readerName,
                                   @RequestParam String readerAddress,
-                                  @RequestParam int numCopies,
+                                  @RequestParam Long numCopies,
                                   HttpServletRequest request,
                                   Model model) {
+
         if (readerName == null || readerAddress == null || readerName.isEmpty() || readerAddress.isEmpty()) {
             return "redirect:/books?error=EmptyFields";
         }
