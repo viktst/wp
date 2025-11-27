@@ -1,47 +1,57 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import mk.ukim.finki.wp.lab.model.BookReservation;
 import mk.ukim.finki.wp.lab.service.BookReservationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
-@AllArgsConstructor
-@RequestMapping("/bookReservation")
+@RequestMapping("/reservations")
+@RequiredArgsConstructor
 public class BookReservationController {
 
     private final BookReservationService reservationService;
 
-    @PostMapping
-    public String makeReservation(@RequestParam String bookTitle,
-                                  @RequestParam String readerName,
-                                  @RequestParam String readerAddress,
-                                  @RequestParam Long numCopies,
-                                  HttpServletRequest request,
-                                  Model model) {
+    @PostMapping("/create")
+    public String createReservation(@RequestParam Long bookId,
+                                    @RequestParam String readerName,
+                                    @RequestParam String readerAddress,
+                                    @RequestParam Integer numberOfCopies) {
 
-        if (readerName == null || readerAddress == null || readerName.isEmpty() || readerAddress.isEmpty()) {
-            return "redirect:/books?error=EmptyFields";
+        try {
+            reservationService.createReservation(bookId, readerName, readerAddress, numberOfCopies);
+            return "redirect:/reservations/success";
+        } catch (Exception e) {
+            return "redirect:/books?error=" + e.getMessage();
         }
+    }
 
-        var reservation = reservationService.placeReservation(bookTitle, readerName, readerAddress, numCopies);
-        String clientIP = getClientIP(request);
-
-        model.addAttribute("reservation", reservation);
-        model.addAttribute("clientIP", clientIP);
-
+    @GetMapping("/success")
+    public String showSuccessPage() {
         return "reservationConfirmation";
     }
 
-    private String getClientIP(HttpServletRequest request) {
-        String xForwardedFor = request.getHeader("X-Forwarded-For");
-        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
-            return xForwardedFor.split(",")[0];
+    @GetMapping
+    public String getAllReservations(Model model) {
+        List<BookReservation> reservations = reservationService.getAllReservations();
+        model.addAttribute("reservations", reservations);
+
+        int totalBooksReserved = 0;
+        Set<String> uniqueBookTitles = new HashSet<>();
+
+        for (BookReservation reservation : reservations) {
+            totalBooksReserved += reservation.getNumberOfCopies();
+            uniqueBookTitles.add(reservation.getBookTitle());
         }
-        return request.getRemoteAddr();
+
+        model.addAttribute("totalBooksReserved", totalBooksReserved);
+        model.addAttribute("uniqueBooksCount", uniqueBookTitles.size());
+
+        return "allBookReservations";
     }
 }

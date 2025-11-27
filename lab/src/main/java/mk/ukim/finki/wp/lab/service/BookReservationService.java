@@ -4,6 +4,7 @@ import mk.ukim.finki.wp.lab.model.BookReservation;
 import java.util.List;
 
 public interface BookReservationService {
-    BookReservation placeReservation(String bookTitle, String readerName, String readerAddress, Long numberOfCopies);
-    List<BookReservation> listAll();
+    BookReservation createReservation(Long bookId, String readerName,
+                                      String readerAddress, Integer numberOfCopies);
+    List<BookReservation> getAllReservations();
 }

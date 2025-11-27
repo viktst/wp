@@ -1,150 +1,149 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <title>Book Reservation - Welcome and choose a Book</title>
+    <meta charset="UTF-8">
+    <title>Book Library</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: "Linux Biolinum G", sans-serif;
-        }
-
-        .book-option:hover {
-            background-color: #f8f9fa;
+        .book-actions .btn {
+            margin: 2px;
         }
     </style>
 </head>
 <body class="bg-light">
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h1 class="h3 mb-0">Welcome to our Book Reservation App</h1>
-                </div>
-                <div class="card-body">
-                    <div th:if="${hasError}" class="alert alert-danger" role="alert">
-                        <span th:text="${error}"></span>
-                    </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/books">
+            <i class="fas fa-book"></i> Book Library
+        </a>
+    </div>
+</nav>
 
-                    <div class="mb-3">
-                        <a th:href="@{/books/add-form}" class="btn btn-success">Add New Book</a>
-                    </div>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-book"></i> Book Collection</h1>
+        <a href="/books/create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Book
+        </a>
+    </div>
 
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h3 class="h5 mb-3">Search Books</h3>
-                            <form method="get" th:action="@{/books}" class="row g-3 align-items-end">
-                                <div class="col-md-4">
-                                    <label class="form-label">Search by title:</label>
-                                    <input type="text" name="searchText" th:value="${searchText}"
-                                           class="form-control" placeholder="Enter book title">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Minimum rating:</label>
-                                    <input type="number" name="rating" step="0.1" min="0" max="5"
-                                           th:value="${rating}" class="form-control" placeholder="0.0">
-                                </div>
-                                <div class="col-md-3">
-                                    <button type="submit" class="btn btn-success w-100">Search</button>
-                                </div>
-                                <div class="col-md-2">
-                                    <a th:href="@{/books}" class="btn btn-outline-secondary w-100">Clear</a>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+    <form th:action="@{/books}" method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control"
+                   placeholder="Search books by title..." th:value="${search}">
+            <button class="btn btn-outline-primary" type="submit">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+    </form>
 
-                    <h2 class="h4 mb-3">All Books:</h2>
-                    <div class="table-responsive mb-4">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-dark">
-                            <tr>
-                                <th>Title</th>
-                                <th>Genre</th>
-                                <th>Rating</th>
-                                <th>Author</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="book : ${books}">
-                                <td th:text="${book.title}"></td>
-                                <td th:text="${book.genre}"></td>
-                                <td>
-                                    <span class="badge bg-warning text-dark" th:text="${book.averageRating}"></span>
-                                </td>
-                                <td th:text="${book.author.name + ' ' + book.author.surname}"></td>
-                                <td>
-                                    <a th:href="@{/books/edit-form/{id}(id=${book.id})}"
-                                       class="btn btn-sm btn-info">Edit</a>
-                                    <form th:action="@{/books/delete/{id}(id=${book.id})}"
-                                          method="post" style="display: inline;">
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this book?')">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div th:if="${#lists.isEmpty(books)}" class="alert alert-warning mt-3">
-                            No books found matching your search criteria.
-                        </div>
-                    </div>
+    <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 
-                    <form action="/bookReservation" method="POST">
-                        <h2 class="h4 mb-3">Make a Reservation:</h2>
-                        <div class="mb-4">
-                            <label class="form-label">Choose a book:</label>
-                            <div th:each="book, iterStat : ${books}" class="book-option card mb-2">
-                                <div class="card-body py-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="bookTitle"
-                                               th:value="${book.title}" th:id="'book_' + ${iterStat.index}">
-                                        <label class="form-check-label" th:for="'book_' + ${iterStat.index}">
-                                            <strong>Title:</strong> <span th:text="${book.title}"></span>,
-                                            <strong>Genre:</strong> <span th:text="${book.genre}"></span>,
-                                            <strong>Rating:</strong>
-                                            <span class="badge bg-warning text-dark"
-                                                  th:text="${book.averageRating}"></span>
-                                        </label>
-                                    </div>
-                                </div>
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i> All Books
+                <span class="badge bg-secondary" th:text="${books.size()}"></span>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div th:if="${books.size() == 0}" class="text-center py-5">
+                <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No books found</h4>
+                <p class="text-muted">Start by adding some books to your library</p>
+                <a href="/books/create" class="btn btn-primary mt-2">
+                    <i class="fas fa-plus"></i> Add First Book
+                </a>
+            </div>
+
+            <div th:if="${books.size() > 0}" class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Genre</th>
+                        <th>Rating</th>
+                        <th>Author</th>
+                        <th>Available</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="book : ${books}">
+                        <td th:text="${book.id}"></td>
+                        <td>
+                            <strong th:text="${book.title}"></strong>
+                        </td>
+                        <td>
+                            <span th:if="${book.genre == 'Adventure'}" class="badge bg-success"
+                                  th:text="${book.genre}"></span>
+                            <span th:if="${book.genre == 'Sci-Fi'}" class="badge bg-info"
+                                  th:text="${book.genre}"></span>
+                            <span th:if="${book.genre != 'Adventure' and book.genre != 'Sci-Fi'}"
+                                  class="badge bg-warning" th:text="${book.genre}"></span>
+                        </td>
+                        <td>
+                            <span class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <span th:text="${#numbers.formatDecimal(book.averageRating, 1, 1)}"></span>
+                            </span>
+                        </td>
+                        <td th:text="${book.author.name + ' ' + book.author.surname}"></td>
+                        <td>
+                            <span th:if="${book.availableCopies > 0}" class="text-success">
+                                <i class="fas fa-check"></i>
+                                <span th:text="${book.availableCopies}"></span> copies
+                            </span>
+                            <span th:if="${book.availableCopies == 0}" class="text-danger">
+                                <i class="fas fa-times"></i>
+                                <span th:text="${book.availableCopies}"></span> copies
+                            </span>
+                        </td>
+                        <td>
+                            <div class="book-actions">
+                                <a th:if="${book.availableCopies > 0}"
+                                   th:href="@{/books/reserve/{id}(id=${book.id})}"
+                                   class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-bookmark"></i> Reserve
+                                </a>
+                                <a th:if="${book.availableCopies == 0}"
+                                   class="btn btn-outline-secondary btn-sm disabled">
+                                    <i class="fas fa-bookmark"></i> Reserve
+                                </a>
+                                <a th:href="@{/books/edit/{id}(id=${book.id})}"
+                                   class="btn btn-outline-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a th:href="@{/books/delete/{id}(id=${book.id})}"
+                                   class="btn btn-outline-danger btn-sm"
+                                   onclick="return confirm('Are you sure you want to delete this book?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h2 class="h4 mb-3">Enter your information:</h2>
-                                <div class="mb-3">
-                                    <label class="form-label">Your Name:</label>
-                                    <input type="text" name="readerName" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Your Address:</label>
-                                    <input type="text" name="readerAddress" class="form-control" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <h2 class="h4 mb-3">Choose number of copies:</h2>
-                                <div class="mb-3">
-                                    <input type="number" name="numCopies" min="1" max="10" value="1"
-                                           class="form-control">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <input type="submit" value="Reserve Book" class="btn btn-primary btn-lg px-5">
-                        </div>
-                    </form>
-                </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="/reservations" class="btn btn-outline-dark">
+            <i class="fas fa-list-alt"></i> View All Reservations
+        </a>
+        <div class="text-muted small">
+            Total: <span th:text="${books.size()}"></span> books
+        </div>
+    </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

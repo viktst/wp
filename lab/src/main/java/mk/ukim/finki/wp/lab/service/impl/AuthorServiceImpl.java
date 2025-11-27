@@ -1,15 +1,14 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.repository.AuthorRepository;
 import mk.ukim.finki.wp.lab.service.AuthorService;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
@@ -17,5 +16,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> findAll() {
         return authorRepository.findAll();
+    }
+
+    @Override
+    public List<Author> findAllOrderedByName() {
+        return authorRepository.findAllOrderByName();
     }
 }

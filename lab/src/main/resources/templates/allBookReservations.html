@@ -3,54 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <title>All Book Reservations</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            font-family: "Linux Biolinum G", sans-serif;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h1 class="h4 mb-0">All Book Reservations</h1>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/books">
+            <i class="fas fa-book"></i> Book Library
+        </a>
+    </div>
+</nav>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-list-alt"></i> All Book Reservations</h1>
+        <a href="/books" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Back to Books
+        </a>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">
+                <i class="fas fa-history"></i> Reservation History
+                <span th:if="${reservations.size() > 0}" class="badge bg-primary" th:text="${reservations.size()}"></span>
+            </h5>
         </div>
         <div class="card-body">
-            <div th:if="${#lists.isEmpty(reservations)}" class="alert alert-warning text-center">
-                There are currently no reservations.
+            <div th:if="${reservations.size() == 0}" class="text-center py-5">
+                <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No Reservations Yet</h4>
+                <p class="text-muted">There are no book reservations at the moment.</p>
+                <a href="/books" class="btn btn-primary mt-2">
+                    <i class="fas fa-book"></i> Browse Books
+                </a>
             </div>
-            <div th:if="${!#lists.isEmpty(reservations)}" class="table-responsive">
-                <table class="table table-striped table-hover align-middle">
+            <div th:if="${reservations.size() > 0}" class="table-responsive">
+                <table class="table table-hover">
                     <thead class="table-dark">
                     <tr>
                         <th>ID</th>
                         <th>Book Title</th>
                         <th>Reader Name</th>
-                        <th>Reader Address</th>
-                        <th>Number of Copies</th>
+                        <th>Address</th>
+                        <th>Copies</th>
+                        <th>Date</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="reservation : ${reservations}">
-                        <td th:text="${reservation.id}">1</td>
-                        <td th:text="${reservation.bookTitle}">Book Title</td>
-                        <td th:text="${reservation.readerName}">John Doe</td>
-                        <td th:text="${reservation.readerAddress}">New York</td>
-                        <td th:text="${reservation.numberOfCopies}">2</td>
+                        <td th:text="${reservation.id}"></td>
+                        <td>
+                            <strong th:text="${reservation.bookTitle}"></strong>
+                        </td>
+                        <td th:text="${reservation.readerName}"></td>
+                        <td>
+                            <small class="text-muted" th:text="${reservation.readerAddress}"></small>
+                        </td>
+                        <td>
+                            <span class="badge bg-info" th:text="${reservation.numberOfCopies}"></span>
+                        </td>
+                        <td>
+                            <small class="text-muted"
+                                   th:text="${#temporals.format(reservation.reservationDate, 'dd/MM/yyyy HH:mm')}"></small>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex justify-content-end mt-4">
-                <a href="/books" class="btn btn-secondary">
-                    Make Another Reservation
-                </a>
+        </div>
+    </div>
+    <div th:if="${reservations.size() > 0}" class="mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="fas fa-chart-bar"></i> Reservation Statistics
+                </h6>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h4 th:text="${reservations.size()}" class="text-primary"></h4>
+                        <small class="text-muted">Total Reservations</small>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 th:text="${totalBooksReserved}" class="text-success"></h4>
+                        <small class="text-muted">Total Books Reserved</small>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 th:text="${uniqueBooksCount}" class="text-warning"></h4>
+                        <small class="text-muted">Unique Books</small>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
