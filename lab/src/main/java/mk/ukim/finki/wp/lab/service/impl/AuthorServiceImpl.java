@@ -20,6 +20,6 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> findAllOrderedByName() {
-        return authorRepository.findAllOrderByName();
+        return authorRepository.findAllByOrderByNameAscSurnameAsc();
     }
 }

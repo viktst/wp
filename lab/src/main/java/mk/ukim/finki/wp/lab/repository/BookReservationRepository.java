@@ -9,8 +9,5 @@ import java.util.List;
 @Repository
 public interface BookReservationRepository extends JpaRepository<BookReservation, Long> {
     List<BookReservation> findAllByOrderByReservationDateDesc();
-
-    @Query("SELECT br FROM BookReservation br WHERE LOWER(br.bookTitle) LIKE LOWER(CONCAT('%', :bookTitle, '%'))")
-
     List<BookReservation> findByBookTitleContainingIgnoreCase(String bookTitle);
 }

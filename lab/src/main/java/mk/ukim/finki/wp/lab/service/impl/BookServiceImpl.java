@@ -75,7 +75,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAvailableBooks() {
-        return bookRepository.findAvailableBooks();
+        return bookRepository.findByAvailableCopiesGreaterThan(0);
     }
 
     @Override

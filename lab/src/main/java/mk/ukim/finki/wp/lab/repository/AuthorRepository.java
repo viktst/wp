@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
-    @Query("SELECT a FROM Author a ORDER BY a.name, a.surname")
-
-    List<Author> findAllOrderByName();
+    List<Author> findAllByOrderByNameAscSurnameAsc();
 }

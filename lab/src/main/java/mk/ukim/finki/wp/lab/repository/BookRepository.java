@@ -11,15 +11,12 @@ import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
+
     List<Book> findAllByAuthor_Id(Long authorId);
 
     List<Book> findByTitleContainingIgnoreCase(String title);
 
-    @Query("SELECT b FROM Book b WHERE b.availableCopies > 0")
-    List<Book> findAvailableBooks();
-
-    @Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))")
-    List<Book> searchByTitle(@Param("title") String title);
+    List<Book> findByAvailableCopiesGreaterThan(int copies);
 
     Optional<Book> findFirstByTitle(String title);
 }
