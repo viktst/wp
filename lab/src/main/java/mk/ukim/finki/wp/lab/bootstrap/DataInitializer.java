@@ -22,28 +22,41 @@ public class DataInitializer {
     @PostConstruct
     public void init() {
         if (authorRepository.count() == 0) {
-            initData();
+            initAuthors();
+        }
+        if (bookRepository.count() == 0) {
+            initBooks();
+        }
+        if (reservationRepository.count() == 0) {
+            initReservations();
         }
     }
 
-    private void initData() {
-        // avtori
+    private void initAuthors() {
         List<Author> authors = List.of(
-                new Author("Robert", "Martin", "USA", "Foftware engineer"),
+                new Author("Robert", "Martin", "USA", "Software engineer"),
                 new Author("Steve", "Stevenson", "UK", "Fiction writer"),
                 new Author("George", "Georges", "Macedonia", "Novelist and essayist")
         );
         authorRepository.saveAll(authors);
+    }
 
-        // knigi
+    private void initBooks() {
+        List<Author> authors = authorRepository.findAll();
+        if (authors.isEmpty()) return;
+
         List<Book> books = List.of(
                 new Book("Domain Driven Design", "Software Architecture", 4.7, authors.get(0)),
                 new Book("Harry Potter", "Fantasy", 2.9, authors.get(1)),
                 new Book("The Hobbit", "Fantasy", 4.7, authors.get(2))
         );
         bookRepository.saveAll(books);
+    }
 
-        // rezervacii
+    private void initReservations() {
+        List<Book> books = bookRepository.findAll();
+        if (books.isEmpty()) return;
+
         List<BookReservation> reservations = List.of(
                 new BookReservation("Domain Driven Design", "John Johnson", "Los Angeles, USA", 2),
                 new BookReservation("The Hobbit", "Bob Smith", "London, UK", 1)
