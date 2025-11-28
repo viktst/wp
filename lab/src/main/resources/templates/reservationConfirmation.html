@@ -3,28 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Reservation Successful</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <th:block th:insert="fragments/header :: header"></th:block>
 </head>
 <body class="bg-light">
+<div th:insert="fragments/navbar :: navbar"></div>
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card text-center">
                 <div class="card-header bg-success text-white">
-                    <h3>Reservation Successful!</h3>
+                    <h3 class="pt-3 pb-3">Reservation Successful!</h3>
                 </div>
                 <div class="card-body">
                     <p class="card-text">Your book reservation has been confirmed.</p>
                     <p class="text-muted">The books will be prepared for pickup.</p>
-
                     <div class="mt-4">
-                        <a href="/books" class="btn btn-primary me-2">📚 Browse More Books</a>
-                        <a href="/reservations" class="btn btn-outline-secondary">📋 View All Reservations</a>
+                        <a href="/books" class="btn btn-primary me-2">Browse More Books</a>
+                        <a href="/reservations" class="btn btn-outline-secondary">View All Reservations</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div th:insert="fragments/header :: scripts"></div>
 </body>
 </html>

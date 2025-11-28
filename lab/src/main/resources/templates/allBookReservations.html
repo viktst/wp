@@ -1,45 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>All Book Reservations</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <th:block th:insert="fragments/header :: header"></th:block>
 </head>
 <body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/books">
-            <i class="fas fa-book"></i> Book Library
-        </a>
-    </div>
-</nav>
+<div th:insert="fragments/navbar :: navbar"></div>
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><i class="fas fa-list-alt"></i> All Book Reservations</h1>
-        <a href="/books" class="btn btn-primary">
-            <i class="fas fa-arrow-left"></i> Back to Books
-        </a>
+        <h1 class="pt-3 pb-3"><span style="border-bottom: 5px solid #000; font-weight: bold">All</span> Book
+            Reservations</h1>
+        <a href="/books" class="btn btn-primary">Back to Books</a>
     </div>
     <div class="card shadow-sm">
         <div class="card-header bg-white">
             <h5 class="mb-0">
                 <i class="fas fa-history"></i> Reservation History
-                <span th:if="${reservations.size() > 0}" class="badge bg-primary" th:text="${reservations.size()}"></span>
+                <span th:if="${reservations.size() > 0}" class="badge bg-primary"
+                      th:text="${reservations.size()}"></span>
             </h5>
         </div>
         <div class="card-body">
             <div th:if="${reservations.size() == 0}" class="text-center py-5">
                 <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
                 <h4 class="text-muted">No Reservations Yet</h4>
-                <p class="text-muted">There are no book reservations at the moment.</p>
-                <a href="/books" class="btn btn-primary mt-2">
-                    <i class="fas fa-book"></i> Browse Books
-                </a>
+                <a href="/books" class="btn btn-primary mt-2">Browse Books</a>
             </div>
             <div th:if="${reservations.size() > 0}" class="table-responsive">
                 <table class="table table-hover">
-                    <thead class="table-dark">
+                    <thead class="table-primary">
                     <tr>
                         <th>ID</th>
                         <th>Book Title</th>
@@ -52,18 +42,11 @@
                     <tbody>
                     <tr th:each="reservation : ${reservations}">
                         <td th:text="${reservation.id}"></td>
-                        <td>
-                            <strong th:text="${reservation.bookTitle}"></strong>
-                        </td>
+                        <td><strong th:text="${reservation.bookTitle}"></strong></td>
                         <td th:text="${reservation.readerName}"></td>
-                        <td>
-                            <small class="text-muted" th:text="${reservation.readerAddress}"></small>
-                        </td>
-                        <td>
-                            <span class="badge bg-info" th:text="${reservation.numberOfCopies}"></span>
-                        </td>
-                        <td>
-                            <small class="text-muted"
+                        <td><small class="text-muted" th:text="${reservation.readerAddress}"></small></td>
+                        <td><span class="badge bg-info" th:text="${reservation.numberOfCopies}"></span></td>
+                        <td><small class="text-muted"
                                    th:text="${#temporals.format(reservation.reservationDate, 'dd/MM/yyyy HH:mm')}"></small>
                         </td>
                     </tr>
@@ -75,9 +58,7 @@
     <div th:if="${reservations.size() > 0}" class="mt-4">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">
-                    <i class="fas fa-chart-bar"></i> Reservation Statistics
-                </h6>
+                <h6 class="card-title"><i class="fas fa-chart-bar"></i> Reservation Statistics</h6>
                 <div class="row text-center">
                     <div class="col-md-4">
                         <h4 th:text="${reservations.size()}" class="text-primary"></h4>
@@ -96,6 +77,7 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div th:insert="fragments/footer :: footer"></div>
+<div th:insert="fragments/header :: scripts"></div>
 </body>
 </html>
