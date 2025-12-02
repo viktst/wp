@@ -112,6 +112,25 @@
             </div>
         </div>
     </div>
+    <div class="mt-4">
+        <h4>Author Statistics</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Author</th>
+                <th>Books Count</th>
+                <th>Average Rating</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="authorStat : ${authorStatistics}">
+                <td th:text="${authorStat.key.name} + ' ' + ${authorStat.key.surname}"></td>
+                <td th:text="${authorStat.value['booksCount']}"></td>
+                <td th:text="${#numbers.formatDecimal(authorStat.value['averageRating'], 1, 1)}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="mt-4 d-flex justify-content-between">
         <a href="/reservations" class="btn btn-outline-dark">
             <i class="fas fa-list-alt"></i> View All Reservations

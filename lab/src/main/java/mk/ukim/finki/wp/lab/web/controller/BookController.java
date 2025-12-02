@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.service.AuthorService;
 import mk.ukim.finki.wp.lab.service.BookService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -22,7 +24,6 @@ public class BookController {
     public String getBooksPage(@RequestParam(required = false) String error,
                                @RequestParam(required = false) String search,
                                Model model) {
-
         try {
             List<Book> books;
             if (search != null && !search.trim().isEmpty()) {
@@ -34,10 +35,15 @@ public class BookController {
             model.addAttribute("books", books);
             model.addAttribute("search", search);
 
+            List<Author> authors = authorService.findAllOrderedByName();
+            model.addAttribute("authors", authors);
+
+            Map<Author, Map<String, Object>> authorStatistics = authorService.getAuthorStatistics();
+            model.addAttribute("authorStatistics", authorStatistics);
+
             if (error != null) {
                 model.addAttribute("error", error);
             }
-
         } catch (Exception e) {
             model.addAttribute("error", "Error loading books: " + e.getMessage());
         }
@@ -78,7 +84,6 @@ public class BookController {
                            @RequestParam String genre,
                            @RequestParam Double averageRating,
                            @RequestParam Long authorId) {
-
         try {
             if (title == null || title.trim().isEmpty()) {
                 return "redirect:/books?error=Title is required";
