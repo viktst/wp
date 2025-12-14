@@ -93,10 +93,12 @@
                         </td>
                         <td>
                             <div class="book-actions">
-                                <a th:if="${book.availableCopies > 0}" th:href="@{/books/reserve/{id}(id=${book.id})}"
-                                   class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-bookmark"></i> Reserve
-                                </a>
+                                <th:block sec:authorize="isAuthenticated()">
+                                    <a th:if="${book.availableCopies > 0}" th:href="@{/books/reserve/{id}(id=${book.id})}"
+                                       class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-bookmark"></i> Reserve
+                                    </a>
+                                </th:block>
                                 <a th:if="${book.availableCopies == 0}"
                                    class="btn btn-outline-secondary btn-sm disabled">
                                     <i class="fas fa-bookmark"></i> Reserve

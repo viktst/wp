@@ -19,12 +19,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/",
                                 "/login",
-                                "/books/**",
+                                "/books",
                                 "/reservations"
                         ).permitAll()
                         .requestMatchers(
@@ -32,7 +31,7 @@ public class WebSecurityConfig {
                                 "/books/edit/**",
                                 "/books/delete/**"
                         ).hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
