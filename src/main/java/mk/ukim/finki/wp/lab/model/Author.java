@@ -3,7 +3,6 @@ package mk.ukim.finki.wp.lab.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +26,4 @@ public class Author {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
-
-    public Author(String name, String surname, String country, String biography) {
-        this.name = name;
-        this.surname = surname;
-        this.country = country;
-        this.biography = biography;
-    }
-
-    public String getFullName() {
-        return name + " " + surname;
-    }
 }

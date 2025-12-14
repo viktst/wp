@@ -43,7 +43,12 @@ public class BookServiceImpl implements BookService {
         Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new IllegalArgumentException("Author not found with ID: " + authorId));
 
-        Book book = new Book(title, genre, averageRating, author);
+        Book book = new Book();
+        book.setTitle(title);
+        book.setGenre(genre);
+        book.setAverageRating(averageRating);
+        book.setAuthor(author);
+        book.setAvailableCopies(5);
         return bookRepository.save(book);
     }
 

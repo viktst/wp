@@ -27,13 +27,4 @@ public class BookReservation {
     private Integer numberOfCopies;
 
     private LocalDateTime reservationDate;
-
-    public BookReservation(String bookTitle, String readerName,
-                           String readerAddress, Integer numberOfCopies) {
-        this.bookTitle = bookTitle;
-        this.readerName = readerName;
-        this.readerAddress = readerAddress;
-        this.numberOfCopies = numberOfCopies;
-        this.reservationDate = LocalDateTime.now();
-    }
 }

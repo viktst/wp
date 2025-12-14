@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Book {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,12 +27,4 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
-
-    public Book(String title, String genre, Double averageRating, Author author) {
-        this.title = title;
-        this.genre = genre;
-        this.averageRating = averageRating;
-        this.author = author;
-        this.availableCopies = 5;
-    }
 }

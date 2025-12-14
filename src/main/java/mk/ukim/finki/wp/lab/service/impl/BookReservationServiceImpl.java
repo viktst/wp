@@ -9,6 +9,7 @@ import mk.ukim.finki.wp.lab.service.BookReservationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,9 +36,13 @@ public class BookReservationServiceImpl implements BookReservationService {
         book.setAvailableCopies(book.getAvailableCopies() - numberOfCopies);
         bookRepository.save(book);
 
-        BookReservation reservation = new BookReservation(
-                book.getTitle(), readerName, readerAddress, numberOfCopies
-        );
+        BookReservation reservation = new BookReservation();
+        reservation.setBookTitle("Domain Driven Design");
+        reservation.setReaderName("John Johnson");
+        reservation.setReaderAddress("Los Angeles, USA");
+        reservation.setNumberOfCopies(2);
+        reservation.setReservationDate(LocalDateTime.now());
+
 
         return reservationRepository.save(reservation);
     }
